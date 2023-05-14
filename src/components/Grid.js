@@ -1,9 +1,24 @@
 import { Grid, GridItem, Text, Divider, Center } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import ReactDOM from "react-dom";
 
 function GridTemplate({ text, secondaryText }) {
   const fontColors = {
     color: ["teal", "orange"],
   };
+
+  const [character, setCharacter] = useState(null);
+
+  useEffect(() => {
+    fetch("https://swapi.dev/api/people/1/")
+      .then((response) => response.json())
+      .then((responseData) => {
+        setCharacter(responseData);
+      })
+      .catch((error) => {
+        console.error("Error fetching character data:", error);
+      });
+  }, []);
 
   return (
     <Grid
@@ -13,8 +28,9 @@ function GridTemplate({ text, secondaryText }) {
       gap={4}
     >
       <GridItem
-        bgGradient="linear(to-b, pink.100, green.100, pink.100)"
-        rowSpan={4}
+        bgGradient="linear(to-b, whiteAlpha.100, green.100, whiteAlpha.100)"
+        rowStart={2}
+        rowEnd={4}
         colSpan={1}
         minH="100%"
       >
@@ -26,11 +42,43 @@ function GridTemplate({ text, secondaryText }) {
           {secondaryText}
         </Text>
       </GridItem>
-      <GridItem bg="blue" colSpan={2} minH="100%" />
-      <GridItem bg="orange" colSpan={2} minH="100%" />
-      <GridItem bg="black" colSpan={2} minH="100%" />
-      <GridItem bg="red" colSpan={2} minH="100%" />
-      <GridItem bg="purple" colStart={4} rowSpan={1} />
+      <GridItem colStart={2} colEnd={4} minH="100%">
+        <Divider />
+
+        <Text
+          mt="5px"
+          textAlign="center"
+          style={{ color: fontColors.color[1] }}
+        >
+          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Expedita
+          illo rerum nostrum, quos voluptates autem. Et odio, accusamus
+          repudiandae illum quas inventore saepe, porro, autem repellat minus
+          delectus voluptatum nemo.
+        </Text>
+      </GridItem>
+      <GridItem colSpan={3} minH="100%">
+        <Text>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorum
+          temporibus magni fugit voluptates sed? Atque nisi in vero laborum eum
+          provident eveniet quos libero ullam suscipit, deleniti molestias
+          voluptates quod!
+        </Text>
+      </GridItem>
+      <GridItem colSpan={2} minH="100%">
+        <Text style={{ color: fontColors.color[0] }}>
+          {character ? (
+            <>
+              <Text>Name: {character.name}</Text>
+              <Text>Height: {character.height}</Text>
+              <Text>Mass: {character.mass}</Text>
+              {/* Render additional character data */}
+            </>
+          ) : (
+            <Text>Loading character data...</Text>
+          )}
+        </Text>
+      </GridItem>
+      <GridItem colStart={2} colEnd={4} minH="100%" />
     </Grid>
   );
 }

@@ -1,0 +1,3 @@
+function ImageTemplate() {
+  return <></>;
+}
