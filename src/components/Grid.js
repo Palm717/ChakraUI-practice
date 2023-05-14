@@ -1,24 +1,11 @@
 import { Grid, GridItem, Text, Divider, Center } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import ReactDOM from "react-dom";
+import StarWarsCharacter from "./Characters";
 
 function GridTemplate({ text, secondaryText }) {
   const fontColors = {
     color: ["teal", "orange"],
   };
-
-  const [character, setCharacter] = useState(null);
-
-  useEffect(() => {
-    fetch("https://swapi.dev/api/people/1/")
-      .then((response) => response.json())
-      .then((responseData) => {
-        setCharacter(responseData);
-      })
-      .catch((error) => {
-        console.error("Error fetching character data:", error);
-      });
-  }, []);
 
   return (
     <Grid
@@ -66,16 +53,7 @@ function GridTemplate({ text, secondaryText }) {
       </GridItem>
       <GridItem colSpan={2} minH="100%">
         <Text style={{ color: fontColors.color[0] }}>
-          {character ? (
-            <>
-              <Text>Name: {character.name}</Text>
-              <Text>Height: {character.height}</Text>
-              <Text>Mass: {character.mass}</Text>
-              {/* Render additional character data */}
-            </>
-          ) : (
-            <Text>Loading character data...</Text>
-          )}
+          <StarWarsCharacter />
         </Text>
       </GridItem>
       <GridItem colStart={2} colEnd={4} minH="100%" />
