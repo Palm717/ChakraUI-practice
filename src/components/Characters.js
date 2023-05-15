@@ -1,14 +1,16 @@
 import { Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 function StarWarsCharacter() {
-  const [character, setCharacter] = useState(null);
+  const [characters, setCharacters] = useState([]);
 
   useEffect(() => {
-    fetch("https://swapi.dev/api/people/1/")
-      .then((response) => response.json())
-      .then((responseData) => {
-        setCharacter(responseData);
+    axios
+      .get("https://swapi.dev/api/people/")
+      .then((response) => {
+        const firstTenCharacters = response.data.results.slice(0, 5);
+        setCharacters(firstTenCharacters);
       })
       .catch((error) => {
         console.error("Error fetching character data:", error);
@@ -17,13 +19,12 @@ function StarWarsCharacter() {
 
   return (
     <>
-      {character ? (
-        <>
-          <Text>Name: {character.name}</Text>
-          <Text>Height: {character.height}</Text>
-          <Text>Mass: {character.mass}</Text>
-          {/* Render additional character data */}
-        </>
+      {characters.length > 0 ? (
+        characters.map((character, index) => (
+          <div key={index}>
+            <Text>{character.name}</Text>
+          </div>
+        ))
       ) : (
         <Text>Loading character data...</Text>
       )}
